@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  cloud:
+    gateway:
+      mvc: # Spring Cloud Gateway MVC 사용 시의 경로입니다.
+        routes: # 라우팅 설정을 시작하는 부분입니다. 여러 라우트를 정의할 수 있습니다.
+          - id: backend-user # 첫 번째 라우트의 고유 식별자입니다.
+            uri: lb://backend-user # 이 라우트가 요청을 전달할 대상 URI입니다. 'lb'는 로드 밸런싱을 의미합니다.
+            predicates: # 이 라우트가 적용될 조건을 정의합니다.
+              - Path=/api/user/** # '/api/user/'로 시작하는 모든 경로의 요청이 이 라우트의 대상이 됩니다.
+          - id: backend-alim # 두 번째 라우트의 고유 식별자입니다.
+            uri: lb://backend-alim # 이 라우트가 요청을 전달할 대상 URI입니다.
+            predicates: # 이 라우트가 적용될 조건을 정의합니다.
+              - Path=/api/alim/** # '/api/alim/'로 시작하는 모든 경로의 요청이 이 라우트의 대상이 됩니다.

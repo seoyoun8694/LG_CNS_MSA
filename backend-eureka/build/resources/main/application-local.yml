@@ -1,0 +1,14 @@
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+#  server:
+#    eviction-interval-timer-in-ms: 5000 # 인스턴스 제거 간격 (5초)
+#    renewal-percent-threshold: 0.85 # 갱신 임계값 조정

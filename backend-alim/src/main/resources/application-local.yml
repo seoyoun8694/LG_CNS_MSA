@@ -1,0 +1,25 @@
+server:
+  port: 8082
+
+#spring:
+#  cloud:
+#    discovery:
+#      client:
+#        simple:
+#          instances: # 'my-backend-service'에 대한 인스턴스 정의
+#            user-service:
+#              - service-id: user-service-1
+#                uri: http://localhost:8081
+#              - service-id: user-service-2
+#                uri: http://localhost:8081
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  #    lease-renewal-interval-in-seconds: 10  # 하트비트 간격(기본 30초)
+  #    lease-expiration-duration-in-seconds: 30  # 만료 시간(기본 90초)
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

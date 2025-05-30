@@ -1,0 +1,50 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:13306/user?serverTimezone=UTC&useSSL=true&autoReconnect=true&useUnicode=true&characterEncoding=utf-8
+    username: user
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-test-query: SELECT 1 # HikariCP 유효성 검사 추가
+      validation-timeout: 5000
+  jpa:
+    hibernate:
+      ddl-auto: create # 오직 테스트 환경에서만
+    generate-ddl: true # 오직 테스트 환경에서만 (spring.jpa.generate-ddl)
+    show-sql: true
+    open-in-view: false
+    # properties:
+    #   hibernate:
+    #     dialect: org.hibernate.dialect.MySQL8Dialect
+
+#spring:
+#  cloud:
+#    discovery:
+#      client:
+#        simple:
+#          instances: # 'my-backend-service'에 대한 인스턴스 정의
+#            alim-service:
+#              - service-id: alim-service
+#                uri: http://localhost:8082
+#              - service-id: alim-service
+#                uri: http://localhost:8082
+
+eureka:
+  instance:
+    prefer-ip-address: true
+#    lease-renewal-interval-in-seconds: 10  # 하트비트 간격(기본 30초)
+#    lease-expiration-duration-in-seconds: 30  # 만료 시간(기본 90초)
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+jwt:
+  expires-in: 86400 # 1day
+  mobile-expires-in: 31536000
+  table-expires-in: 31536000
+  secret-key: AADfaskllew32dsfasdTG764Gdslkj298GsWg86G

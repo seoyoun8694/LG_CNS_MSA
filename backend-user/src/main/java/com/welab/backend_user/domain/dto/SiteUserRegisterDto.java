@@ -2,6 +2,7 @@ package com.welab.backend_user.domain.dto;
 
 import com.welab.backend_user.common.exception.BadParameter;
 import com.welab.backend_user.domain.SiteUser;
+import com.welab.backend_user.secret.hash.SecureHashUtils;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -24,7 +25,7 @@ public class SiteUserRegisterDto {
         SiteUser siteUser = new SiteUser();
 
         siteUser.setUserId(this.userId);
-        siteUser.setPassword(this.password);
+        siteUser.setPassword(SecureHashUtils.hash(this.password));
         siteUser.setPhoneNumber(this.phoneNumber);
 
         return siteUser;

@@ -23,3 +23,7 @@ spring:
             uri: lb://backend-alim # 이 라우트가 요청을 전달할 대상 URI입니다.
             predicates: # 이 라우트가 적용될 조건을 정의합니다.
               - Path=/api/alim/** # '/api/alim/'로 시작하는 모든 경로의 요청이 이 라우트의 대상이 됩니다.
+
+jwt:
+  header: Authorization
+  secret-key: AADfaskllew32dsfasdTG764Gdslkj298GsWg86Gkalsdjfalkdsjfkladsjfklasdjfkwejqtklfksadnfklsadjmfkl

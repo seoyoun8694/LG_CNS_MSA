@@ -27,6 +27,12 @@ spring:
               - Path=/api/alim/**
             filters:
               - addAuthenticationHeader
+          - id: backend-post
+            predicates:
+              - Path=/api/post/**
+            uri: lb://backend-post
+            filters:
+              - AddAuthenticationHeader
 
 jwt:
   header: Authorization

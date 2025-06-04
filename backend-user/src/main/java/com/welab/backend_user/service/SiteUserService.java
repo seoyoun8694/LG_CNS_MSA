@@ -7,7 +7,9 @@ import com.welab.backend_user.domain.dto.SiteUserInfoDto;
 import com.welab.backend_user.domain.dto.SiteUserLoginDto;
 import com.welab.backend_user.domain.dto.SiteUserRefreshDto;
 import com.welab.backend_user.domain.dto.SiteUserRegisterDto;
+import com.welab.backend_user.domain.event.SiteUserInfoEvent;
 import com.welab.backend_user.domain.repository.SiteUserRepository;
+import com.welab.backend_user.event.producer.KafkaMessageProducer;
 import com.welab.backend_user.remote.alim.RemoteAlimService;
 import com.welab.backend_user.remote.alim.dto.SendSmsDto;
 import com.welab.backend_user.secret.hash.SecureHashUtils;
@@ -25,6 +27,7 @@ public class SiteUserService {
     private final SiteUserRepository siteUserRepository;
     private final TokenGenerator tokenGenerator;
     private final RemoteAlimService remoteAlimService;
+    private final KafkaMessageProducer kafkaMessageProducer;
 
     @Transactional
     public void registerUser(SiteUserRegisterDto registerDto) {
@@ -32,9 +35,7 @@ public class SiteUserService {
 
         siteUserRepository.save(siteUser);
 
-        // 알림톡 전송 요청
-        SendSmsDto.Request request = SendSmsDto.Request.fromEntity(siteUser);
-        remoteAlimService.sendSms(request);
+        SiteUserInfoEvent message = SiteUserInfoEvent.fromEntity("Create", siteUser);kafkaMessageProducer.send(SiteUserInfoEvent.Topic, message);
     }
 
     @Transactional(readOnly = true)

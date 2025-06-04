@@ -11,10 +11,13 @@ import lombok.Setter;
 public class PostCreateDto {
     @NotBlank(message = "타이틀을 입력하세요.")
     private String title;
+
     @NotBlank(message = "본문을 입력하세요.")
     private String content;
+
     public Post toEntity() {
         Post post = new Post();
+
         post.setUserId(GatewayRequestHeaderUtils.getUserIdOrThrowException());post.setPost(this.title, this.content);
         return post;
     }

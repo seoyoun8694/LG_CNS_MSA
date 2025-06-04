@@ -17,14 +17,18 @@ public class GatewayRequestHeaderUtils {
         }
         return userId;
     }
+
     public static String getClientDevice() {
-        String clientDevice = getRequestHeaderParamAsString("X-Client-Device");if (clientDevice == null) {
+        String clientDevice = getRequestHeaderParamAsString("X-Client-Device");
+        if (clientDevice == null) {
             return null;
         }
         return clientDevice;
     }
+
     public static String getClientAddress() {
-        String clientAddress = getRequestHeaderParamAsString("X-Client-Address");if (clientAddress == null) {
+        String clientAddress = getRequestHeaderParamAsString("X-Client-Address");
+        if (clientAddress == null) {
             return null;
         }
         return clientAddress;

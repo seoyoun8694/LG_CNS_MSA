@@ -22,6 +22,7 @@ public class PostComment {
     @Getter
     @Setter
     private Long id;
+
     @Column(name = "comment", nullable = false)
     @Getter
     private String comment;
@@ -34,12 +35,15 @@ public class PostComment {
     @Getter
     @Setter
     private String userId;
+
     @Column(name = "created_datetime", nullable = false)
     @Getter
     private LocalDateTime createdDatetime = LocalDateTime.now();
+
     @Column(name = "updated_datetime")
     @Getter
     private LocalDateTime updatedDatetime;
+
     @ManyToOne(targetEntity = Post.class)
     @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = true)
     @Setter

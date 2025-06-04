@@ -3,6 +3,7 @@ package com.welab.backend_user.service;
 import com.welab.backend_user.common.exception.BadParameter;
 import com.welab.backend_user.common.exception.NotFound;
 import com.welab.backend_user.domain.SiteUser;
+import com.welab.backend_user.domain.dto.SiteUserInfoDto;
 import com.welab.backend_user.domain.dto.SiteUserLoginDto;
 import com.welab.backend_user.domain.dto.SiteUserRefreshDto;
 import com.welab.backend_user.domain.dto.SiteUserRegisterDto;
@@ -63,5 +64,14 @@ public class SiteUserService {
         }
 
         return tokenGenerator.generateAccessToken(userId, "WEB");
+    }
+
+    @Transactional(readOnly = true)
+    public SiteUserInfoDto userInfo(String userId) {
+        SiteUser user = siteUserRepository.findByUserId(userId);
+        if (user == null) {
+            throw new NotFound("사용자를 찾을 수 없습니다.");
+        }
+        return SiteUserInfoDto.fromEntity(user);
     }
 }

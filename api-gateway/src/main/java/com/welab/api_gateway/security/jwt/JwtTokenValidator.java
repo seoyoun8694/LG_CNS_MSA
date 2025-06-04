@@ -22,40 +22,49 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenValidator {
     private final JwtConfigProperties configProperties;
+
     private volatile SecretKey secretKey;
 
     private SecretKey getSecretKey() {
         if (secretKey == null) {
             synchronized (this) {
-                if (secretKey == null) {
+                if( secretKey == null) {
                     secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(configProperties.getSecretKey()));
                 }
             }
         }
+
         return secretKey;
     }
 
     public JwtAuthentication validateToken(String token) {
         String userId = null;
+
         final Claims claims = this.verifyAndGetClaims(token);
         if (claims == null) {
             return null;
         }
+
         Date expirationDate = claims.getExpiration();
         if (expirationDate == null || expirationDate.before(new Date())) {
             return null;
         }
+
         userId = claims.get("userId", String.class);
+
         String tokenType = claims.get("tokenType", String.class);
         if (!"access".equals(tokenType)) {
             return null;
         }
+
         UserPrincipal principal = new UserPrincipal(userId);
+
         return new JwtAuthentication(principal, token, getGrantedAuthorities("user"));
     }
 
     private Claims verifyAndGetClaims(String token) {
         Claims claims;
+
         try {
             claims = Jwts.parser()
                     .verifyWith(getSecretKey())
@@ -65,6 +74,7 @@ public class JwtTokenValidator {
         } catch (Exception e) {
             claims = null;
         }
+
         return claims;
     }
 
@@ -73,14 +83,16 @@ public class JwtTokenValidator {
         if (role != null) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role));
         }
+
         return grantedAuthorities;
     }
 
     public String getToken(HttpServletRequest request) {
         String authHeader = getAuthHeaderFromHeader(request);
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && authHeader.startsWith("Bearer")) {
             return authHeader.substring(7);
         }
+
         return null;
     }
 

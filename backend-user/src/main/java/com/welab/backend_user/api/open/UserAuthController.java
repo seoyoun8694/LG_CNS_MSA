@@ -29,14 +29,15 @@ public class UserAuthController {
     }
 
     @PostMapping(value = "/login")
-    public ApiResponseDto<TokenDto.AccessRefreshToken> login(@RequestBody @Valid SiteUserLoginDto loginDto) {TokenDto.AccessRefreshToken token = siteUserService.login(loginDto);
+    public ApiResponseDto<TokenDto.AccessRefreshToken> login(@RequestBody @Valid SiteUserLoginDto loginDto) {
+        TokenDto.AccessRefreshToken token = siteUserService.login(loginDto);
+
         return ApiResponseDto.createOk(token);
     }
 
     @PostMapping(value = "/refresh")
     public ApiResponseDto<TokenDto.AccessToken> refresh(@RequestBody @Valid SiteUserRefreshDto refreshDto) {
-        TokenDto.AccessToken token = siteUserService.refresh(refreshDto);
+        var token = siteUserService.refresh(refreshDto);
         return ApiResponseDto.createOk(token);
     }
 }
-

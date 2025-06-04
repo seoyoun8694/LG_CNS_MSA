@@ -22,11 +22,12 @@ public class UserController {
 
     @GetMapping(value = "/test")
     public ApiResponseDto<String> test() {
-        // String response = remoteAlimService.sms();
+//        String result = remoteAlimService.hello();
         String userId = GatewayRequestHeaderUtils.getUserIdOrThrowException();
-        log.info("userId = {}", userId);
+        log.error("userId = {}", userId);
         return ApiResponseDto.createOk(userId);
     }
+
     @PostMapping(value = "/sms")
     public ApiResponseDto<SendSmsDto.Response> sms(@RequestBody SendSmsDto.Request request) {
         var result = remoteAlimService.sendSms(request);

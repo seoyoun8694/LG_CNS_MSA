@@ -13,6 +13,10 @@ server:
 #              - service-id: user-service-2
 #                uri: http://localhost:8081
 
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+
 eureka:
   instance:
     prefer-ip-address: true

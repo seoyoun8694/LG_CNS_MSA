@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 public class PostService {
     private final PostRepository postRepository;
     private final PostCommentRepository postCommentRepository;
+    private final RemoteUserService remoteUserService;
+    private final RemoteAlimService remoteAlimService;
 
     @Transactional
     public void createPost(PostCreateDto createDto) {
@@ -36,5 +38,15 @@ public class PostService {
         PostComment postComment = createDto.toEntity();
         postCommentRepository.save(postComment);
         post.addComment(postComment);
+
+        SiteUserInfoDto userInfoDto = remoteUserService.userInfo(post.getUserId()).getData();
+
+        // 알림톡 전송 요청
+        SendSmsDto.Request requestDto = new SendSmsDto.Request();
+        requestDto.setUserId(userInfoDto.getUserId());
+        requestDto.setPhoneNumber(userInfoDto.getPhoneNumber());
+        requestDto.setTitle("댓글 달림");
+        requestDto.setTitle("댓글이 달렸습니다.");
+        remoteAlimService.sendSms(requestDto);
     }
 }

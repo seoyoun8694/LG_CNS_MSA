@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BackendUserController {
     private final SiteUserService siteUserService;
 
-
     @GetMapping(value = "/user/{userId}")
     public ApiResponseDto<SiteUserInfoDto> userInfo(@PathVariable String userId) {
         SiteUserInfoDto userInfoDto = siteUserService.userInfo(userId);

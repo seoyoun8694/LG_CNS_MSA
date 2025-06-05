@@ -2,6 +2,7 @@ package com.welab.backend_user.service;
 
 import com.welab.backend_user.common.exception.BadParameter;
 import com.welab.backend_user.common.exception.NotFound;
+import com.welab.backend_user.common.type.ActionAndId;
 import com.welab.backend_user.domain.SiteUser;
 import com.welab.backend_user.domain.dto.SiteUserInfoDto;
 import com.welab.backend_user.domain.dto.SiteUserLoginDto;
@@ -26,16 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class SiteUserService {
     private final SiteUserRepository siteUserRepository;
     private final TokenGenerator tokenGenerator;
-    private final RemoteAlimService remoteAlimService;
-    private final KafkaMessageProducer kafkaMessageProducer;
 
     @Transactional
-    public void registerUser(SiteUserRegisterDto registerDto) {
-        SiteUser siteUser = registerDto.toEntity();
-
+    public ActionAndId registerUserAndNotify(SiteUserRegisterDto registerDto) {SiteUser siteUser = registerDto.toEntity();
         siteUserRepository.save(siteUser);
-
-        SiteUserInfoEvent message = SiteUserInfoEvent.fromEntity("Create", siteUser);kafkaMessageProducer.send(SiteUserInfoEvent.Topic, message);
+        return ActionAndId.of("Create", siteUser.getId());
     }
 
     @Transactional(readOnly = true)

@@ -2,6 +2,12 @@ server:
   port: 8083
 
 spring:
+  cloud:
+    config:
+      enabled: false
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
   datasource:
     url: jdbc:mysql://localhost:13307/post?serverTimezone=UTC&useSSL=true&autoReconnect=true&useUnicode=true&characterEncoding=utf-8
     username: user

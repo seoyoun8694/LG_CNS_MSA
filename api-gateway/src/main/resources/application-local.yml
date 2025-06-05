@@ -12,6 +12,8 @@ eureka:
 
 spring:
   cloud:
+    config:
+      enabled: false
     gateway:
       mvc:
         routes:
@@ -33,6 +35,9 @@ spring:
             uri: lb://backend-post
             filters:
               - AddAuthenticationHeader
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
 
 jwt:
   header: Authorization

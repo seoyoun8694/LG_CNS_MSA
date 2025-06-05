@@ -27,11 +27,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class SiteUserService {
     private final SiteUserRepository siteUserRepository;
     private final TokenGenerator tokenGenerator;
+    private final KafkaMessageProducer kafkaMessageProducer;
 
     @Transactional
     public ActionAndId registerUserAndNotify(SiteUserRegisterDto registerDto) {SiteUser siteUser = registerDto.toEntity();
         siteUserRepository.save(siteUser);
         return ActionAndId.of("Create", siteUser.getId());
+    }
+
+    @Transactional
+    public void registerUser(SiteUserRegisterDto registerDto) {
+        SiteUser siteUser = registerDto.toEntity();
+
+        siteUserRepository.save(siteUser);
+
+        SiteUserInfoEvent message = SiteUserInfoEvent.fromEntity("Create", siteUser);kafkaMessageProducer.send(SiteUserInfoEvent.Topic, message);
     }
 
     @Transactional(readOnly = true)
